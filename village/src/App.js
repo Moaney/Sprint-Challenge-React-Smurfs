@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 
+
 import './App.css';
 import SmurfForm from './components/SmurfForm';
 import Smurfs from './components/Smurfs';
 import axios from 'axios'
+import { Route } from 'react-router-dom';
 
 class App extends Component {
   constructor(props) {
@@ -27,9 +29,23 @@ componentDidMount() {
     .catch(err => console.log(err));
 };
 
+addSmurf = smurf => { 
+  axios.post('http://localhost:3333/smurfs', smurf)
+  .then(res => {
+    console.log(res);
+    this.setState({
+      smurfs: res.data
+    });
+  })
+  .catch(err => console.log(err));
+}
+
   render() {
     return (
       <div className="App">
+        <div className='nav'>
+            <Route path='/' component={Smurfs} />
+        </div>
         <SmurfForm />
         <Smurfs smurfs={this.state.smurfs} />
         <div className='smurf-list'>
